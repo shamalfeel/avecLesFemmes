@@ -7,6 +7,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+
 
 #[AsCommand(
     name: 'alfeelsham:migration',
@@ -20,19 +22,32 @@ class AlfeelshamMigrationCommand extends Command
     ): int {
         $application = $this->getApplication();
 
+        if ($application === null) {
+            return Command::FAILURE;
+        }
+
         // Générer la migration
+        $output->writeln('<info>Génération de la migration...</info>');
+
         $makeMigration = $application->find('make:migration');
-        $result = $makeMigration->run(new ArrayInput([]), $output);
+        $result = $makeMigration->run(
+            new ArrayInput([]),
+            $output
+        );
 
         if ($result !== Command::SUCCESS) {
             return $result;
         }
 
-        // Exécuter la migration
+        // Exécuter les migrations
+        $output->writeln('<info>Exécution des migrations...</info>');
+
         $migrate = $application->find('doctrine:migrations:migrate');
-        return $migrate->run(
-            new ArrayInput(['--no-interaction' => true]),
-            $output
-        );
+
+        $migrateInput = new ArrayInput([
+            '--no-interaction' => true,
+        ]);
+
+        return $migrate->run($migrateInput, $output);
     }
 }
