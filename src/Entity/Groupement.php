@@ -24,11 +24,7 @@ class Groupement
     #[ORM\Column(length: 100)]
     private ?string $adresse = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updateAt = null;
+    
 
     /**
      * @var Collection<int, Campagne>
@@ -48,11 +44,18 @@ class Groupement
     #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'groupement', orphanRemoval: true)]
     private Collection $exercices;
 
+    /**
+     * @var Collection<int, MouvementCaisseSociale>
+     */
+    #[ORM\OneToMany(targetEntity: MouvementCaisseSociale::class, mappedBy: 'groupement')]
+    private Collection $mouvementCaisseSociales;
+
     public function __construct()
     {
         $this->campagnes = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->exercices = new ArrayCollection();
+        $this->mouvementCaisseSociales = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,29 +99,7 @@ class Groupement
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdateAt(): ?\DateTimeImmutable
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
-    {
-        $this->updateAt = $updateAt;
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection<int, Campagne>
@@ -204,6 +185,36 @@ class Groupement
             // set the owning side to null (unless already changed)
             if ($exercice->getGroupement() === $this) {
                 $exercice->setGroupement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MouvementCaisseSociale>
+     */
+    public function getMouvementCaisseSociales(): Collection
+    {
+        return $this->mouvementCaisseSociales;
+    }
+
+    public function addMouvementCaisseSociale(MouvementCaisseSociale $mouvementCaisseSociale): static
+    {
+        if (!$this->mouvementCaisseSociales->contains($mouvementCaisseSociale)) {
+            $this->mouvementCaisseSociales->add($mouvementCaisseSociale);
+            $mouvementCaisseSociale->setGroupement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMouvementCaisseSociale(MouvementCaisseSociale $mouvementCaisseSociale): static
+    {
+        if ($this->mouvementCaisseSociales->removeElement($mouvementCaisseSociale)) {
+            // set the owning side to null (unless already changed)
+            if ($mouvementCaisseSociale->getGroupement() === $this) {
+                $mouvementCaisseSociale->setGroupement(null);
             }
         }
 
