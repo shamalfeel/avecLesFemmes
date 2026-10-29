@@ -16,6 +16,16 @@ class GroupementRepository extends ServiceEntityRepository
         parent::__construct($registry, Groupement::class);
     }
 
+     public function findAllWithExercices(): array
+    {
+        return $this->createQueryBuilder('g')
+            ->leftJoin('g.exercices', 'e')
+            ->addSelect('e')
+            ->orderBy('g.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Groupement[] Returns an array of Groupement objects
 //     */
