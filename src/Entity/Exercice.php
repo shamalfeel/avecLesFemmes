@@ -6,6 +6,8 @@ use App\Enum\StatusExercice;
 use App\Repository\ExerciceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -35,7 +37,12 @@ class Exercice
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
 
-   
+   #[ORM\OneToMany(mappedBy: 'exercice', targetEntity: Campagne::class)]
+    private Collection $campagnes;
+
+    public function __construct(){
+        $this->campagnes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
