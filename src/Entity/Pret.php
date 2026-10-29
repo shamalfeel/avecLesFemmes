@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Trait\DateTimeTrait;
 use App\Repository\PretRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,8 +9,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PretRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Pret
-{
+{   use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

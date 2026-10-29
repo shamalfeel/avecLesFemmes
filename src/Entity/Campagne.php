@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Trait\DateTimeTrait;
 use App\Repository\CampagneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,8 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
     'epargne' => Epargne::class,
     'tontine' => Tontine::class,
 ])]
+#[ORM\HasLifecycleCallbacks]
 abstract class Campagne
-{
+{ 
+    use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,11 +36,7 @@ abstract class Campagne
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montant = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updateAt = null;
+    
 
     /**
      * @var Collection<int, ModeCotisation>
@@ -50,9 +48,19 @@ abstract class Campagne
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'campagnes')]
+    private ?Exercice $exercice = null;
+
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'cams')]
+    private Collection $seances;
+
     public function __construct()
     {
         $this->modeCotisations = new ArrayCollection();
+        $this->seances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,29 +116,7 @@ abstract class Campagne
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdateAt(): ?\DateTimeImmutable
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
-    {
-        $this->updateAt = $updateAt;
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection<int, ModeCotisation>
@@ -170,6 +156,48 @@ abstract class Campagne
     public function setGroupement(?Groupement $groupement): static
     {
         $this->groupement = $groupement;
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): static
+    {
+        $this->exercice = $exercice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->setCams($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getCams() === $this) {
+                $seance->setCams(null);
+            }
+        }
 
         return $this;
     }
