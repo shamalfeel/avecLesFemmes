@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use App\Trait\DateTimeTrait;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,8 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
     'admin' => Admin::class,
 ])]
 #[ORM\Table(name: '`user`')]
+#[ORM\HasLifecycleCallbacks]
 abstract class User
-{
+{   use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Entity;
-
+use App\Trait\DateTimeTrait;
 use App\Repository\AmendeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AmendeRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Amende
-{
+{   use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

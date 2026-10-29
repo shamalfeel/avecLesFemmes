@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use App\Trait\DateTimeTrait;
 
 use App\Repository\SeanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,8 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Seance
-{
+{   use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Trait\DateTimeTrait;
 use App\Repository\CampagneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,8 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
     'epargne' => Epargne::class,
     'tontine' => Tontine::class,
 ])]
+#[ORM\HasLifecycleCallbacks]
 abstract class Campagne
-{
+{ 
+    use DateTimeTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
