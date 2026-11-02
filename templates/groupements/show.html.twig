@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche du groupement{% endblock %}
+
+{% block body %}
+    <h1>Fiche du groupement</h1>
+
+    <section>
+        <h2>{{ groupement.nom }}</h2>
+
+        <p>
+            <strong>Adresse :</strong>
+            {{ groupement.adresse }}
+        </p>
+
+        <p>
+            <strong>Téléphone :</strong>
+            {{ groupement.tel }}
+        </p>
+    </section>
+
+    <h3>Exercices du groupement</h3>
+
+    {% if groupement.exercices is not empty %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for exercice in groupement.exercices %}
+                    <tr>
+                        <td>
+                            {{ exercice.dateDebut
+                                ? exercice.dateDebut|date('d/m/Y')
+                                : '-' }}
+                        </td>
+
+                        <td>
+                            {{ exercice.dateFin
+                                ? exercice.dateFin|date('d/m/Y')
+                                : '-' }}
+                        </td>
+
+                        <td>
+                            {{ exercice.status.value }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun exercice enregistré pour ce groupement.</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{{ path('app_groupement') }}">
+        ← Retour à la liste des groupements
+    </a>
+{% endblock %}

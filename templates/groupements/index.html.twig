@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette – Groupements | Avec les femmes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@600;700&display=swap" rel="stylesheet">
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('css/groupements.css') }}">
+{% endblock %}
+</head>
+<body>
+ 
+<!-- =====================================================
+     ÉCRAN 1 : liste des groupements (groupement/index)
+     ===================================================== -->
+     {% block body %}
+<header class="entete" id="liste">
+  <div class="entete__barre">
+    <a class="marque" href="#liste">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <path d="M3 13h22a11 11 0 0 1-22 0Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M8 9c3-2.5 9-2.5 12 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      Avec les femmes
+    </a>
+    <nav aria-label="Navigation principale">
+      <ul class="nav">
+        <li><a href="#liste" aria-current="page">Groupements</a></li>
+        <li><a href="#">Membres</a></li>
+        <li><a href="#">Exercices</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="tissage"></div>
+</header>
+ 
+<main class="contenu">
+  <div class="tete-page">
+    <div>
+      <h1>Groupements</h1>
+      <p class="sous-titre">{{ dataGroupements|length }} groupements suivis</p>
+    </div>
+    <a class="bouton" href="#">Nouveau groupement</a>
+  </div>
+ 
+  <section class="panneau" aria-labelledby="titre-liste">
+    <h2 id="titre-liste" class="visuellement-cache">Liste des groupements</h2>
+ 
+    <form class="recherche" role="search">
+      <label for="q">Rechercher un groupement</label>
+      <input id="q" name="q" type="search" placeholder="Nom ou ville">
+    </form>
+ 
+    <div class="defilement">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Groupement</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Exercice en cours</th>
+            <th scope="col" class="nombre">Exercices</th>
+            <th scope="col"><span class="visuellement-cache">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for groupement in dataGroupements %}
+    <tr>
+        <td>
+            <a class="nom-groupement"
+          href="{{ path('app_groupement_show', {'id': groupement.id}) }}">
+              {{ groupement.nom }}
+          </a>
+            <span class="discret">{{ groupement.adresse }}</span>
+        </td>
+
+        <td>{{ groupement.tel }}</td>
+
+        <td>
+            {% if groupement.exerciceEnCours %}
+                <span class="statut statut--en_cours">En cours</span>
+                <span class="discret">{{ groupement.exerciceEnCours }}</span>
+            {% else %}
+                <span class="discret">Aucun exercice en cours</span>
+            {% endif %}
+        </td>
+
+        <td class="nombre">{{ groupement.nombreExercices }}</td>
+
+        <td>
+            <a href="{{ path('app_groupement_show', {'id': groupement.id}) }}">Voir la fiche</a>
+        </td>
+    </tr>
+{% endfor %}
+          
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+ 
+<hr class="fin-ecran">
+ 
+
+ {% endblock %}
+</body>
+</html>
