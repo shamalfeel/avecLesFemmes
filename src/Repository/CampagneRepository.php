@@ -15,6 +15,17 @@ class CampagneRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Campagne::class);
     }
+   
+/**
+ * Récupère toutes les campagnes.
+ */
+public function findAllCampagnes(): array
+{
+    return $this->createQueryBuilder('c')
+        ->getQuery()
+        ->getResult();
+}
+
 
 //    /**
 //     * @return Campagne[] Returns an array of Campagne objects
