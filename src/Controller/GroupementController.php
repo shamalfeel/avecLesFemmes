@@ -7,6 +7,7 @@ use App\Service\GroupementService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -18,9 +19,10 @@ final class GroupementController extends AbstractController
     }
 
     #[Route('/super-admin/groupements', name: 'app_groupement', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $groupements = $this->groupementService->getListeGroupements();
+        $valeur = $request->query->get('q');
+        $groupements = $this->groupementService->getListeGroupements($valeur);
 
         return $this->render('groupements/index.html.twig', [
             'controller_name' => 'GroupementController',
@@ -35,4 +37,5 @@ final class GroupementController extends AbstractController
             'groupement' => $groupement,
         ]);
     }
-}
+   
+} 

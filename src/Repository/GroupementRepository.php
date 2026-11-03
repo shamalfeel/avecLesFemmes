@@ -26,6 +26,14 @@ class GroupementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByVilleouNom(string $valeur): array
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.nom LIKE :valeur OR g.adresse LIKE :valeur')
+            ->setParameter('valeur', '%' . $valeur . '%')
+            ->getQuery()
+            ->getResult();
+    } 
 //    /**
 //     * @return Groupement[] Returns an array of Groupement objects
 //     */
