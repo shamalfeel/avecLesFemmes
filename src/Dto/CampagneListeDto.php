@@ -7,13 +7,10 @@ use App\Entity\Campagne;
 class CampagneListeDto
 {
     public function __construct(
-        public readonly int $id,
+        
         public readonly ?string $nom,
         public readonly ?string $dateDebutAt,
         public readonly ?string $dateFin,
-        public readonly ?string $montant,
-        public readonly ?string $groupement,
-        public readonly ?string $exercice,
         public readonly string $type,
     ) {
     }
@@ -21,13 +18,10 @@ class CampagneListeDto
     public static function fromEntity(Campagne $campagne): self
     {
         return new self(
-            id: $campagne->getId(),
+            
             nom: $campagne->getNom(),
             dateDebutAt: $campagne->getDateDebutAt()?->format('d/m/Y'),
             dateFin: $campagne->getDateFin()?->format('d/m/Y'),
-            montant: $campagne->getMontant(),
-            groupement: $campagne->getGroupement()?->getNom(),
-            
             type: match (true) {
                 $campagne instanceof \App\Entity\Epargne => 'Épargne',
                 $campagne instanceof \App\Entity\Tontine => 'Tontine',

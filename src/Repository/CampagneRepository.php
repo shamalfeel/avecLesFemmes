@@ -21,7 +21,7 @@ class CampagneRepository extends ServiceEntityRepository
  */
 public function findAllCampagnes(): array
 {
-    return $this->createQueryBuilder('c')
+    return $this->createQueryBuilder('c') 
         ->getQuery()
         ->getResult();
 }
