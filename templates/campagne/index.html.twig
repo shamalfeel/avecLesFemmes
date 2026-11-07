@@ -14,26 +14,22 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                       
                         <th>Nom</th>
-                        <th>Type</th>
                         <th>Date de début</th>
                         <th>Date de fin</th>
-                        <th>Montant</th>
-                        <th>Groupement</th>
+                        <th>Type</th>
+                        
                     </tr>
                 </thead>
 
                 <tbody>
                     {% for campagne in dataCampagnes %}
                         <tr>
-                            <td>{{ campagne.id }}</td>
                             <td>{{ campagne.nom }}</td>
-                            <td>{{ campagne.type }}</td>
                             <td>{{ campagne.dateDebutAt ?? '-' }}</td>
                             <td>{{ campagne.dateFin ?? '-' }}</td>
-                            <td>{{ campagne.montant ?? '-' }}</td>
-                            <td>{{ campagne.groupement ?? '-' }}</td>
+                            <td>{{ campagne.type }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

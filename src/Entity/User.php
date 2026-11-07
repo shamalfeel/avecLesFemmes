@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
     'admin' => Admin::class,
 ])]
 #[ORM\Table(name: '`user`')]
-#[ORM\HasLifecycleCallbacks]
+#[ORM\HasLifecycleCallbacks] 
 abstract class User
 {   use DateTimeTrait;
     #[ORM\Id]

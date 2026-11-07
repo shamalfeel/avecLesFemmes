@@ -16,9 +16,13 @@ class GroupementService
     }
 
     
-    public function getListeGroupements(): array
+    public function getListeGroupements(?String $valeur): array
     {
-        $groupements = $this->groupementRepository->findAllWithExercices();
+        if ($valeur) {
+            $groupements = $this->groupementRepository->findByVilleouNom($valeur);
+        } else {
+            $groupements = $this->groupementRepository->findAllWithExercices();
+        }
 
         $resultats = [];
 
@@ -46,4 +50,8 @@ class GroupementService
 
         return null;
     }
+
+    
+
+    
 }
